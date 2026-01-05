@@ -46,10 +46,10 @@ const AddProductBtn = () => {
       if (res.ok) {
         toast.success("Product added successfully");
       } else {
-        toast.error(data.err || "Something went wrong");
+        toast.error("please try again later");
       }
     } catch (err) {
-      toast.error(err.message || "Something went wrong");
+      toast.error("please try again later");
     } finally {
       handleClose();
     }
