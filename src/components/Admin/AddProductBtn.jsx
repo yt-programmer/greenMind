@@ -43,8 +43,12 @@ const AddProductBtn = () => {
 
       const data = await res.json();
 
-      if (res.ok) toast.success(data.status || "Product added successfully");
-      else toast.error(data.err || "Something went wrong");
+      console.log(res, data);
+      if (res.ok) {
+        toast.success("Product added successfully");
+      } else {
+        toast.error(data.err || "Something went wrong");
+      }
     } catch (err) {
       toast.error(err.message || "Something went wrong");
     } finally {
