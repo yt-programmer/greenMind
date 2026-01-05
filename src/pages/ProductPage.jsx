@@ -144,7 +144,7 @@ const ProductPage = () => {
         >
           <img
             loading="lazy"
-            src={`${api}${data?.data?.product.image}`}
+            src={data?.data?.product.image}
             alt={data?.data?.product.name}
             className="w-full h-[435px] max-w-sm drop-shadow-xl"
           />

@@ -21,36 +21,37 @@ const AddProductBtn = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (e.target.price.value <= 0) {
-      return toast.error("price from 1");
-    }
+    if (e.target.price.value <= 0)
+      return toast.error("Price must be at least 1");
+
+    const file = e.target.image.files[0];
+    if (!file) return toast.error("Please select an image");
+
+    const form = new FormData();
+    form.append("name", e.target.name.value);
+    form.append("price", e.target.price.value);
+    form.append("description", e.target.desc.value);
+    form.append("inStock", true);
+    form.append("image", file);
 
     try {
-      const form = new FormData();
-
-      form.append("name", e.target.name.value);
-      form.append("price", e.target.price.value);
-      form.append("description", e.target.desc.value);
-      form.append("inStock", true);
-      form.append("image", e.target.image.files[0]);
       const res = await fetch(`${import.meta.env.VITE_API}/api/products`, {
         method: "POST",
         credentials: "include",
         body: form,
       });
+
       const data = await res.json();
 
-      if (res.ok) {
-        toast.success(data.status);
-      } else {
-        toast.error(data.err || "Something went wrong");
-      }
+      if (res.ok) toast.success(data.status || "Product added successfully");
+      else toast.error(data.err || "Something went wrong");
     } catch (err) {
       toast.error(err.message || "Something went wrong");
     } finally {
       handleClose();
     }
   };
+
   return (
     <>
       <button

@@ -104,7 +104,7 @@ const ProductsControl = () => {
               <tr key={product._id} className="border-t hover:bg-gray-50">
                 <td className="p-4">
                   <img
-                    src={`${import.meta.env.VITE_API}${product.image}`}
+                    src={product.image}
                     alt={product.name}
                     className="w-10 h-10 rounded object-cover"
                   />
@@ -159,7 +159,7 @@ const ProductsControl = () => {
             className="bg-white rounded-xl shadow p-4 flex gap-4"
           >
             <img
-              src={`${import.meta.env.VITE_API}${product.image}`}
+              src={product.image}
               alt={product.name}
               className="w-16 h-16 rounded-lg object-cover"
             />

@@ -99,7 +99,7 @@ const Orders = () => {
             {order?.items.map((item) => (
               <div key={item.productId} className="flex gap-4 items-center">
                 <img
-                  src={`${import.meta.env.VITE_API}${item.image}`}
+                  src={item.image}
                   alt={item.name}
                   className="w-14 h-14 object-cover rounded-lg border"
                 />

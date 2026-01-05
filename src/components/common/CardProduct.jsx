@@ -10,7 +10,7 @@ const CardProduct = ({ data }) => {
           <li key={product._id} className="h-[435px] w-full md:w-[300px] p-1 ">
             <Link to={`/product/${product._id}`} className="h-full">
               <img
-                src={`${api}${product.image}`}
+                src={product.image}
                 alt="product img"
                 loading="lazy"
                 className="h-[80%] w-full contain-content rounded-2xl"
