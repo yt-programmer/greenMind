@@ -43,7 +43,6 @@ const AddProductBtn = () => {
 
       const data = await res.json();
 
-      console.log(res, data);
       if (res.ok) {
         toast.success("Product added successfully");
       } else {
