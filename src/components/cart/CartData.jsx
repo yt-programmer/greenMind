@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { toast } from "react-hot-toast";
 import Button from "@mui/material/Button";
@@ -58,13 +58,16 @@ const CartData = ({ cart, setCart, onUpdateQuantity, onRemoveItem }) => {
     return acc + price * qty;
   }, 0);
 
-  if (cart?.items?.length === 0) {
-    return (
-      <h1 className="text-2xl font-semibold flex justify-center w-full h-40 items-center text-center px-4">
-        No items in cart
-      </h1>
-    );
-  }
+  useEffect(() => {
+    if (cart?.items?.length === 0) {
+      return (
+        <h1 className="text-2xl font-semibold flex justify-center w-full h-40 items-center text-center px-4">
+          No items in cart
+        </h1>
+      );
+    }
+  }, [cart]);
+
   return (
     <>
       <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 flex flex-col gap-6">
