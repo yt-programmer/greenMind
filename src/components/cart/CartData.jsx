@@ -76,7 +76,7 @@ const CartData = ({ cart, setCart, onUpdateQuantity, onRemoveItem }) => {
           >
             <div className="flex items-center gap-4 w-full sm:w-2/3">
               <img
-                src={`${import.meta.env.VITE_API}${item.product.image}`}
+                src={item.product.image}
                 alt={item.product.name}
                 className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
               />
