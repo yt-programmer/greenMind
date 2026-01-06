@@ -58,89 +58,89 @@ const CartData = ({ cart, setCart, onUpdateQuantity, onRemoveItem }) => {
     return acc + price * qty;
   }, 0);
 
-  useEffect(() => {
-    if (cart?.items?.length === 0) {
-      return (
-        <h1 className="text-2xl font-semibold flex justify-center w-full h-40 items-center text-center px-4">
-          No items in cart
-        </h1>
-      );
-    }
-  }, [cart]);
-
   return (
     <>
       <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 flex flex-col gap-6">
-        {cart?.items?.map((item) => (
-          <Link
-            to={`/product/${item.product._id}`}
-            key={item.product._id}
-            className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
-          >
-            <div className="flex items-center gap-4 w-full sm:w-2/3">
-              <img
-                src={item.product.image}
-                alt={item.product.name}
-                className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
-              />
-              <div className="flex flex-col flex-1">
-                <span className="font-semibold text-md sm:text-lg">
-                  {item.product.name}
-                </span>
-                <span className="text-gray-500 text-sm sm:text-base">
-                  {item?.product?.price?.toLocaleString("en-US", {
+        {cart?.items?.length !== 0 ? (
+          cart?.items?.map((item) => (
+            <Link
+              to={`/product/${item.product._id}`}
+              key={item.product._id}
+              className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow"
+            >
+              <div className="flex items-center gap-4 w-full sm:w-2/3">
+                <img
+                  src={item.product.image}
+                  alt={item.product.name}
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
+                />
+                <div className="flex flex-col flex-1">
+                  <span className="font-semibold text-md sm:text-lg">
+                    {item.product.name}
+                  </span>
+                  <span className="text-gray-500 text-sm sm:text-base">
+                    {item?.product?.price?.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "EGP",
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-3 mt-2 sm:mt-0 w-full sm:w-auto justify-between">
+                <div className="flex items-center border rounded-lg overflow-hidden">
+                  <button
+                    className="px-3 cursor-pointer py-1 bg-gray-100 hover:bg-gray-200 text-sm sm:text-base"
+                    onClick={(e) => {
+                      if (item.quantity > 1) {
+                        onUpdateQuantity(
+                          e,
+                          item.product._id,
+                          item.quantity - 1
+                        );
+                      }
+                    }}
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1 text-sm sm:text-base">
+                    {item.quantity}
+                  </span>
+                  <button
+                    className="px-3 py-1 cursor-pointer bg-gray-100 hover:bg-gray-200 text-sm sm:text-base"
+                    onClick={(e) =>
+                      onUpdateQuantity(e, item.product._id, item.quantity + 1)
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div className="flex gap-3 flex-col items-center justify-center">
+                  <button
+                    className="px-3 py-1 cursor-pointer bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm sm:text-base"
+                    onClick={(e) => onRemoveItem(e, item.product._id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+
+                <span className="font-bold text-base sm:text-lg">
+                  {(
+                    Number(item.product.price) * Number(item.quantity)
+                  ).toLocaleString("en-US", {
                     style: "currency",
                     currency: "EGP",
                   })}
                 </span>
               </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3 mt-2 sm:mt-0 w-full sm:w-auto justify-between">
-              <div className="flex items-center border rounded-lg overflow-hidden">
-                <button
-                  className="px-3 cursor-pointer py-1 bg-gray-100 hover:bg-gray-200 text-sm sm:text-base"
-                  onClick={(e) => {
-                    if (item.quantity > 1) {
-                      onUpdateQuantity(e, item.product._id, item.quantity - 1);
-                    }
-                  }}
-                >
-                  -
-                </button>
-                <span className="px-4 py-1 text-sm sm:text-base">
-                  {item.quantity}
-                </span>
-                <button
-                  className="px-3 py-1 cursor-pointer bg-gray-100 hover:bg-gray-200 text-sm sm:text-base"
-                  onClick={(e) =>
-                    onUpdateQuantity(e, item.product._id, item.quantity + 1)
-                  }
-                >
-                  +
-                </button>
-              </div>
-
-              <div className="flex gap-3 flex-col items-center justify-center">
-                <button
-                  className="px-3 py-1 cursor-pointer bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm sm:text-base"
-                  onClick={(e) => onRemoveItem(e, item.product._id)}
-                >
-                  Remove
-                </button>
-              </div>
-
-              <span className="font-bold text-base sm:text-lg">
-                {(
-                  Number(item.product.price) * Number(item.quantity)
-                ).toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "EGP",
-                })}
-              </span>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))
+        ) : (
+          <h1 className="text-2xl font-semibold flex justify-center w-full h-40 items-center text-center px-4">
+            No items in cart
+          </h1>
+        )}
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4 font-bold text-lg sm:text-xl">
           <span>
