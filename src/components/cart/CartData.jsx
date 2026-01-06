@@ -61,7 +61,7 @@ const CartData = ({ cart, setCart, onUpdateQuantity, onRemoveItem }) => {
   return (
     <>
       <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 flex flex-col gap-6">
-        {cart?.items?.length !== 0 ? (
+        {cart && cart.items && cart?.items?.length !== 0 ? (
           cart?.items?.map((item) => (
             <Link
               to={`/product/${item.product._id}`}
