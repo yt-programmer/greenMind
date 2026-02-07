@@ -19,37 +19,66 @@ const AddProductBtn = () => {
     setOpen(false);
   };
 
+  const uploadImage = async (file) => {
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "portfolio");
+
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dpzhlzcut/image/upload",
+        {
+          method: "POST",
+          body: data,
+        },
+      );
+
+      const json = await res.json();
+
+      if (!res.ok) throw new Error("Failed to upload image");
+
+      return json.secure_url;
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (e.target.price.value <= 0)
-      return toast.error("Price must be at least 1");
 
-    const file = e.target.image.files[0];
-    if (!file) return toast.error("Please select an image");
-
-    const form = new FormData();
-    form.append("name", e.target.name.value);
-    form.append("price", e.target.price.value);
-    form.append("description", e.target.desc.value);
-    form.append("inStock", true);
-    form.append("image", file);
+    console.log(e.target.image);
 
     try {
+      if (e.target.price.value <= 0)
+        return toast.error("Price must be at least 1");
+
+      const fileImg = e.target.image.files[0];
+      if (!fileImg) return toast.error("Please select an image");
+      const img_url = await uploadImage(fileImg);
+
       const res = await fetch(`${import.meta.env.VITE_API}/api/products`, {
         method: "POST",
         credentials: "include",
-        body: form,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: e.target.nameProduct.value,
+          price: e.target.price.value,
+          description: e.target.desc.value,
+          inStock: true,
+          image: img_url,
+        }),
       });
 
+      console.log(res);
       const data = await res.json();
 
-      if (res.ok) {
-        toast.success("Product added successfully");
-      } else {
-        toast.error("please try again later");
-      }
+      console.log(data);
+      if (res.ok) toast.success("Product added successfully");
+      else toast.error(data.err || "please try again later");
     } catch (err) {
-      toast.error("please try again later");
+      toast.error(err.message || "please try again later");
     } finally {
       handleClose();
     }
@@ -70,12 +99,12 @@ const AddProductBtn = () => {
           <DialogContentText>
             please enter data to add product.
           </DialogContentText>
-          <form onSubmit={(e) => onSubmitHandler(e)} id="subscription-form">
+          <form onSubmit={onSubmitHandler} id="subscription-form">
             <TextField
               autoFocus
               required
               margin="dense"
-              name="name"
+              name="nameProduct"
               label="Product name"
               type="text"
               fullWidth
